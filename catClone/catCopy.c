@@ -21,7 +21,7 @@ int main(int argc, char** argv){
         int t = tokens(&argv[2]);
 
         if(t == 0){
-            printf("error");
+            printf("error\n");
         } else {
             printf("%d\n", t);
         }
@@ -47,14 +47,14 @@ int tokens(char** str){
     } else {
         int i;
         while((i = fgetc(inf)) != EOF){
-            char c = i + '0';
-            char* pt = &c;
-            if(strcmp(pt, " ") || strcmp(pt, "\n") || strcmp(pt, "\r")){
+            char c = i;
+            if(c == ' ' || c == '\n' || c == '\t' || c == '\r'){
                 ++tokens;
             }
         }
     }
     return tokens;
+    fclose(inf);
 }
 
 void copy(char* inFile, char* outFile){
