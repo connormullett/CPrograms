@@ -5,6 +5,7 @@
 
 void copy(char* inFile, char* outFile);
 void cat(char* str);
+int tokens(char** str);
 
 
 // both need to open files
@@ -15,8 +16,17 @@ int main(int argc, char** argv){
                 "usage: %s cat file\n", argv[0], argv[0]);
         return 0;
     }
-    
-    if(argc == 2){  // copy
+
+    else if(strcmp(argv[1], "t") == 0){
+        int t = tokens(&argv[2]);
+
+        if(t == 0){
+            printf("error");
+        } else {
+            printf("%d\n", t);
+        }
+
+    } else if(argc == 2){  // copy
         cat(argv[1]);
 
     } else if(argc == 3){  // cat
@@ -25,6 +35,26 @@ int main(int argc, char** argv){
     }
 
     return 0;
+}
+
+// returns 0 if error
+int tokens(char** str){
+    FILE *inf = fopen(*str, "r");
+    int tokens;
+
+    if(inf == 0){
+        return 0;
+    } else {
+        int i;
+        while((i = fgetc(inf)) != EOF){
+            char c = i + '0';
+            char* pt = &c;
+            if(strcmp(pt, " ") || strcmp(pt, "\n") || strcmp(pt, "\r")){
+                ++tokens;
+            }
+        }
+    }
+    return tokens;
 }
 
 void copy(char* inFile, char* outFile){
