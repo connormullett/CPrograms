@@ -7,8 +7,14 @@
 int main(){
     
     bst* b = create();
-    printf("bst  :: %lu\n", sizeof(b));
-    printf("root :: %lu\n", sizeof(b->root));
+
+    insert(b, 2);
+    insert(b, 4);
+    insert(b, 1);
+    insert(b, 3);
+    insert(b, 5);
+
+    Node* searchedTerm = search(b, 3);
 
     return 0;
 }

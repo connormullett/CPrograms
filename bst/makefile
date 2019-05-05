@@ -1,6 +1,6 @@
 
-output: main.o bst.o
-	gcc main.o bst.o -o output	
+a.out: main.o bst.o
+	gcc main.o bst.o 
 
 main.o: main.c
 	gcc -c main.c

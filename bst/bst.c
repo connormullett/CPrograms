@@ -3,13 +3,6 @@
 #include <stdlib.h>
 #include "bst.h"
 
-// node declaration in bst.h
-struct Node {
-    int data;
-    struct Node* left;
-    struct Node* right;
-};
-
 
 // bst functions
 bst* create(){
@@ -30,24 +23,58 @@ bst* insert(bst* tree, int data){
     return tree;
 }
 
+// returns -1 if searched term is 0
+// else returns 0 if no found term
+Node* search(bst* tree, int term){
+    Node* node = searchNode(tree->root, term);
+    if(node == NULL){
+        return NULL;
+    } else {
+        return node;
+    }
+}
+
 void print(bst* tree){
+    // if node is empty
+    if(tree->root == NULL) return;
     printNode(tree->root);
     printf("\n");
     return;
 }
 
 // node functions
+Node* searchNode(Node* node, int term){
+    if(node == NULL){
+        // return null if not found
+        return NULL;
+    }
+
+    if(node->data == term){
+        return node;
+    }
+
+    if(term < node->data) {
+        return searchNode(node->left, term);
+    } else {
+        return searchNode(node->right, term);
+    }
+}
+
 Node* insertNode(Node* node, Node* root){
     if(node->data < root->data){
         if(root->left){
+            printf("going left\n");
             return insertNode(node, root->left);
         } else {
+            printf("insert left\n");
             root->left = node;
         }
     } else {
         if(root->right){
+            printf("going right\n");
             return insertNode(node, root->right);
         } else {
+            printf("insert right\n");
             root->right = node;
         }
     }
