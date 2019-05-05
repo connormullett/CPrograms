@@ -19,7 +19,8 @@ bst* insert(bst* tree, int data){
     } else {
         insertNode(n, tree->root);
     }
-
+    
+    ++tree->size;
     return tree;
 }
 
@@ -42,6 +43,32 @@ void print(bst* tree){
     return;
 }
 
+int pop(bst* tree, int term){
+    Node* del = search(tree, term);
+
+    if(del == NULL) {
+        return 1;  // doesn't exist
+    }
+
+    // node is a leaf of tree
+    if(del->left == NULL && del->right == NULL){
+        free(del);
+        return 0;
+    }
+
+    // node has 1 child
+    if(del->left == NULL){
+        /* Node* node = del->right; */
+        
+    } else if(del->right == NULL){
+        /* Node* node = del->left; */
+
+    }
+
+    return 0;
+}
+
+
 // node functions
 Node* searchNode(Node* node, int term){
     if(node == NULL){
@@ -63,19 +90,17 @@ Node* searchNode(Node* node, int term){
 Node* insertNode(Node* node, Node* root){
     if(node->data < root->data){
         if(root->left){
-            printf("going left\n");
             return insertNode(node, root->left);
         } else {
-            printf("insert left\n");
             root->left = node;
+            node->parent = root;
         }
     } else {
         if(root->right){
-            printf("going right\n");
             return insertNode(node, root->right);
         } else {
-            printf("insert right\n");
             root->right = node;
+            node->parent = root;
         }
     }
 }
@@ -83,6 +108,7 @@ Node* insertNode(Node* node, Node* root){
 Node* newNode(int data){
     Node* rn = (Node*)malloc(sizeof(Node));
     rn->data = data;
+    rn->parent = NULL;
     rn->left = NULL;
     rn->right = NULL;
     return rn;
@@ -93,6 +119,6 @@ void printNode(Node* node){
 
     if(node->right) printNode(node->right);
 
-    printf("%d", node->data);
+    printf("%d, ", node->data);
 }
 

@@ -14,8 +14,6 @@ int main(){
     insert(b, 3);
     insert(b, 5);
 
-    Node* searchedTerm = search(b, 3);
-
     return 0;
 }
 
