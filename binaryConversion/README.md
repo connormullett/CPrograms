@@ -3,8 +3,8 @@
 Convert binary represantation of integers to integers and vice versa.
 
 ## Usage
-- compile :: `gcc main.c`
-- `./a.out {binary or integer}`
+- Compile and run
+- `gcc main.c` >> `./a.out`
 
 ## Potential
 Create a library for basic math with binary numbers
