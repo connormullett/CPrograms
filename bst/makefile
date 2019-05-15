@@ -10,5 +10,6 @@ bst.o: bst.c bst.h
 
 clean:
 	rm *.o 
-	rm output
+	rm *.s
+	rm *.out
 
