@@ -43,33 +43,62 @@ void print(bst* tree){
     return;
 }
 
-int pop(bst* tree, int term){
-    Node* del = search(tree, term);
-
-    if(del == NULL) {
-        return 1;  // doesn't exist
-    }
-
-    // node is a leaf of tree
-    if(del->left == NULL && del->right == NULL){
-        free(del);
-        return 0;
-    }
-
-    // node has 1 child
-    if(del->left == NULL){
-        /* Node* node = del->right; */
-        
-    } else if(del->right == NULL){
-        /* Node* node = del->left; */
-
-    }
-
-    return 0;
+bst* pop(bst* tree, int term){
+    deleteNode(tree->root, term);
+    return tree;
 }
 
 
 // node functions
+Node* deleteNode(Node* node, int term){
+
+    if(node == NULL) {
+        return node;  // doesn't exist
+    }
+
+    // recursive traversal
+    if(term < node->data){
+        node->left = deleteNode(node->left, term);
+    } else if(term > node->data){
+        node->right = deleteNode(node->right, term);
+    } else {
+        // found the node
+        
+        // only one child
+        if(node->left == NULL){
+            Node* temp = node->right;
+            free(node);
+            return temp;
+        } else if(node->right == NULL) {
+            Node* temp = node->left;
+            free(node);
+            return temp;
+        }
+
+        // node has two children
+        // Get inorder successor (smallest in right)
+        Node* temp = minValueNode(node->right);
+
+        // copy inorder successor's content to node
+        node->data = temp->data;
+
+        // delete the successor
+        node->right = deleteNode(node->right, temp->data);
+    }
+
+    return node;
+}
+
+Node* minValueNode(Node* node){
+    Node* current = node; 
+  
+    /* loop down to find the leftmost leaf */
+    while (current && current->left != NULL) 
+        current = current->left; 
+  
+    return current; 
+}
+
 Node* searchNode(Node* node, int term){
     if(node == NULL){
         // return null if not found

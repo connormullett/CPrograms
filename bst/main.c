@@ -20,6 +20,9 @@ int main(){
     Node* searchedNode = search(b, 10);
     printf("seached node  :: %d\n", searchedNode->data);
 
+    pop(b, 10);
+    print(b);
+
     return 0;
 }
 
