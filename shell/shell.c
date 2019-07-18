@@ -24,11 +24,13 @@ void displayPrompt();
 cmd_struct *parseCommand(char *str);
 char *nextNonEmpty(char **line);
 
-int main() {
+int main(int argc, char* argv[]) {
 
   char *buffer;
   size_t bufsize = 32;
   size_t characters;
+
+  printf("%d\n", argc);
 
   buffer = (char*)malloc(bufsize * sizeof(char));
   if(buffer == NULL) {
@@ -37,18 +39,26 @@ int main() {
     exit(1);
   }
 
-  // display prompt
-  displayPrompt();
+  while(1){
 
-  // set the buffer
-  buffer = (char*)malloc(bufsize * sizeof(char));
-  // getline from stdin
-  characters = getline(&buffer, &bufsize, stdin);
+    // display prompt
+    displayPrompt();
 
-  // parse the command into different chunks
-  cmd_struct command = *parseCommand(buffer);
+    // set the buffer
+    buffer = (char*)malloc(bufsize * sizeof(char));
+    // getline from stdin
+    characters = getline(&buffer, &bufsize, stdin);
 
-  printf("%s\n", command.programName);
+    // parse the command into different chunks
+    cmd_struct command = *parseCommand(buffer);
+
+    if(strcmp(command.programName, "exit") == 0) {
+      exit(0);
+    }
+
+    execvp(command.programName, command.args);
+
+  } 
 }
 
 
