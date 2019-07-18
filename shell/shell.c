@@ -3,9 +3,26 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <limits.h>
+#include <string.h>
+
+#define MAX_LEN 1024
+#define TOKEN_SEP " \t\n\r"
+
+typedef struct {
+  // name of program
+  char *programName;
+
+  // io redirections, -1 means no redirect
+  int redirect[2];
+
+  // args must be null terminated
+  char *args[];
+} cmd_struct;
 
 
 void displayPrompt();
+cmd_struct *parseCommand(char *str);
+char *nextNonEmpty(char **line);
 
 int main() {
 
@@ -28,9 +45,40 @@ int main() {
   // getline from stdin
   characters = getline(&buffer, &bufsize, stdin);
 
-  // characters is not the characters
-  printf("%s\n", buffer);
+  // parse the command into different chunks
+  cmd_struct command = *parseCommand(buffer);
+
+  printf("%s\n", command.programName);
 }
+
+
+cmd_struct *parseCommand(char *str) {
+  // copy input line, save it for later??
+  char *copy = strndup(str, MAX_LEN);
+  char *token;
+  int i = 0;
+
+  cmd_struct *ret = calloc(sizeof(cmd_struct) + MAX_LEN * sizeof(char*), 1);
+
+  while (token = nextNonEmpty(&copy)) {
+    ret->args[i++] = token;
+  }
+
+  ret->programName = ret->args[0];
+  ret->redirect[0] = ret->redirect[1] = -1;
+  return ret;
+}
+
+
+char *nextNonEmpty(char **line){
+  char *tok;
+
+  // consume empty tokens
+  while((tok = strsep(line, TOKEN_SEP)) && !*tok);
+
+  return tok;
+}
+
 
 void displayPrompt(){
   // get username 
